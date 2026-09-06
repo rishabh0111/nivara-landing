@@ -19,6 +19,15 @@ const mono = JetBrains_Mono({
   variable: "--font-mono-face",
 });
 
+/**
+ * Where this is served from. `VERCEL_PROJECT_PRODUCTION_URL` is the project's
+ * stable production domain, so this keeps working through a rename or a custom
+ * domain; the literal is only the local fallback.
+ */
+const SITE = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "http://localhost:3000";
+
 const DESCRIPTION =
   "A multitenant support desk with an AI layer that answers what it can, asks when a " +
   "request is ambiguous, escalates the rest to a person, and cannot misreport which it did.";
@@ -26,7 +35,11 @@ const DESCRIPTION =
 export const metadata: Metadata = {
   title: "Nivara Desk — support that knows what it doesn't know",
   description: DESCRIPTION,
-  metadataBase: new URL("https://nivara-landing.vercel.app"),
+  // Read from the deployment rather than hardcoded. The URL guessed at build
+  // time was wrong the moment Vercel named the project something else, and a
+  // wrong base silently points every absolute metadata URL at a host that does
+  // not exist.
+  metadataBase: new URL(SITE),
   openGraph: {
     title: "Nivara Desk",
     description: DESCRIPTION,
