@@ -483,3 +483,34 @@ html {
     display: block;
   }
 }
+
+/* --- carousel track ---------------------------------------------------- */
+
+/*
+ * The track keeps a real scrollbar rather than hiding one. It is how a
+ * trackpad user knows there is more, and hiding it would leave the arrows as
+ * the only affordance — which is exactly the carousel people complain about.
+ * It is just made quieter than the page's own.
+ */
+.track {
+  scrollbar-width: thin;
+  scrollbar-color: var(--etch-strong) transparent;
+  scroll-padding-inline: 0;
+}
+
+.track::-webkit-scrollbar {
+  height: 8px;
+}
+.track::-webkit-scrollbar-thumb {
+  background: var(--etch-strong);
+  border: 2px solid var(--void);
+  border-radius: 99px;
+}
+.track::-webkit-scrollbar-thumb:hover {
+  background: var(--lume-faint);
+}
+
+/* The focus ring belongs around the track, not inset against its cards. */
+.track:focus-visible {
+  outline-offset: 6px;
+}

@@ -1,4 +1,5 @@
 import Script from "next/script";
+import { Carousel, Card } from "@/components/carousel";
 import { Decode } from "@/components/decode";
 import { Embed, Question } from "@/components/embed";
 import { Field } from "@/components/field";
@@ -465,14 +466,15 @@ export default function Home() {
               policy predicated on a transaction-local setting, so the rows simply are not returned.
             </p>
 
-            <ul data-reveal className="reveal mt-12 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
-              {GUARANTEES.map((item, index) => (
-                <li key={item.title} style={{ ["--i" as string]: index }} className="border-t border-etch pt-5">
-                  <h3 className="font-semibold text-lume">{item.title}</h3>
-                  <p className="mt-2.5 leading-relaxed text-pretty text-lume-dim">{item.line}</p>
-                </li>
-              ))}
-            </ul>
+            <div data-reveal className="reveal mt-12">
+              <Carousel label="How tenant isolation is enforced">
+                {GUARANTEES.map((item) => (
+                  <Card key={item.title} title={item.title}>
+                    {item.line}
+                  </Card>
+                ))}
+              </Carousel>
+            </div>
           </div>
         </section>
 
