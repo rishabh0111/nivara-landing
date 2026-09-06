@@ -1,5 +1,13 @@
 # nivara-landing
 
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat&logo=nextdotjs&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
+![Tailwind%20CSS](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=flat&logo=tailwindcss&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat&logo=vercel&logoColor=white)
+
+[Live](https://nivara-landing-iota.vercel.app)
+
 The landing page for [Nivara Desk](https://nivara-web-nextjs.vercel.app) — a multitenant
 support desk whose AI layer answers what it can, asks when a request is ambiguous, and
 escalates the rest to a person.
