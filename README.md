@@ -45,6 +45,19 @@ Two files land per surface, one per theme, and the stylesheet drops whichever do
 apply. Re-run it after any change to the product's UI, or the page starts describing a
 version of it that no longer exists.
 
+## Checks
+
+```bash
+npm run lint
+npx tsc --noEmit
+npx tsx scripts/check-links.ts            # local
+npx tsx scripts/check-links.ts <live-url>  # a deployment
+```
+
+`check-links.ts` reads the anchors out of the served HTML and follows them.
+It fails on an `<a>` with no `href`, because a styled anchor that goes nowhere
+looks exactly like a working button.
+
 ## Deploying
 
 Vercel, from the repository root, with no configuration and no environment variables. The

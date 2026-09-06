@@ -3,19 +3,6 @@
 import Image from "next/image";
 import { usePointer } from "@/components/motion";
 
-export const LINKS = {
-  web: "https://nivara-web-nextjs.vercel.app",
-  dashboard: "https://nivara-web-nextjs.vercel.app/dashboard",
-  widget: "https://nivara-web-nextjs.vercel.app/widget",
-  portal: "https://nivara-web-nextjs.vercel.app/portal",
-  analytics: "https://nivara-web-nextjs.vercel.app/dashboard/analytics",
-  docs: "https://nivara-api-nestjs.onrender.com/docs",
-  repoApi: "https://github.com/rishabh0111/nivara-api-nestjs",
-  repoWeb: "https://github.com/rishabh0111/nivara-web-nextjs",
-  repoAi: "https://github.com/rishabh0111/nivara-ai",
-  author: "https://rishabh0111.github.io",
-} as const;
-
 /**
  * A captured surface, framed as an instrument display.
  *

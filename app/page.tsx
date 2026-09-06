@@ -8,7 +8,8 @@ import { Motion } from "@/components/motion";
 import { Nav } from "@/components/nav";
 import { Readout, Stream } from "@/components/readout";
 import { Wordmark } from "@/components/logo";
-import { Legend, LINKS, Pane } from "@/components/site";
+import { Legend, Pane } from "@/components/site";
+import { LINKS } from "@/lib/links";
 import { themeScript } from "@/components/theme";
 import { ANSWERED, ESCALATED } from "@/lib/traces";
 

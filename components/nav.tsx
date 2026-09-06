@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Wordmark } from "@/components/logo";
-import { LINKS } from "@/components/site";
+import { LINKS } from "@/lib/links";
 import { ThemeToggle } from "@/components/theme";
 
 const SECTIONS = [
