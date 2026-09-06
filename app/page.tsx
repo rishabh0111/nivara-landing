@@ -7,6 +7,7 @@ import { Gauge } from "@/components/gauge";
 import { Motion } from "@/components/motion";
 import { Nav } from "@/components/nav";
 import { Readout, Stream } from "@/components/readout";
+import { Wordmark } from "@/components/logo";
 import { Legend, LINKS, Pane } from "@/components/site";
 import { themeScript } from "@/components/theme";
 import { ANSWERED, ESCALATED } from "@/lib/traces";
@@ -721,10 +722,7 @@ export default function Home() {
         <div className="mx-auto w-full max-w-6xl px-6 py-16">
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             <div className="lg:col-span-1">
-              <p className="flex items-center gap-2.5 font-semibold tracking-tight">
-                <span aria-hidden="true" className="size-2 rounded-full bg-settled" />
-                Nivara Desk
-              </p>
+              <Wordmark />
               <p className="mt-3 max-w-[34ch] text-sm leading-relaxed text-pretty text-lume-dim">
                 A support desk that answers what it can and says so when it cannot.
               </p>

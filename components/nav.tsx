@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Wordmark } from "@/components/logo";
 import { LINKS } from "@/components/site";
 import { ThemeToggle } from "@/components/theme";
 
@@ -66,11 +67,10 @@ export function Nav() {
       }`}
     >
       <div className="mx-auto flex w-full max-w-6xl items-center gap-6 px-6 py-4">
-        <a href="#top" className="arm flex items-center gap-2.5 font-semibold tracking-tight">
-          <span aria-hidden="true" className="pulse relative flex size-2 rounded-full text-settled">
-            <span className="absolute inset-0 rounded-full bg-settled" />
-          </span>
-          Nivara Desk
+        {/* The visible wordmark is the link's name. An sr-only label beside it
+            just makes a screen reader say the product twice. */}
+        <a href="#top" className="arm">
+          <Wordmark withStatus />
         </a>
 
         <nav aria-label="Sections" className="ml-auto hidden items-center gap-1 md:flex">
