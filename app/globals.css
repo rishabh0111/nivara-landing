@@ -1,0 +1,485 @@
+@import "tailwindcss";
+
+/*
+ * The Instrument.
+ *
+ * Every answer this system gives already emits a trace — retrieval scores, the
+ * gate's free signals, the tool call, tokens, latency. The page is that trace
+ * rendered as an instrument reading itself, and the readings are real: two
+ * captured Turns drive it (`lib/traces.ts`).
+ *
+ * This is deliberately NOT the application's palette. `nivara-web` is a desk
+ * somebody works at all day and is right to be quiet; this page has seconds.
+ * The product's own colours survive only inside the screenshots it frames.
+ */
+
+:root {
+  color-scheme: dark;
+
+  --void: #07090c;
+  --panel: #0d1219;
+  --panel-high: #131b25;
+  --etch: #1b2430;
+  --etch-strong: #2b3949;
+
+  --lume: #e9eef6;
+  --lume-dim: #8c9bb0;
+  --lume-faint: #6b7a8f;
+
+  /* The signal: retrieval, the live path, anything the system is reading. */
+  --trace: #4cc2ff;
+  --trace-wash: #0b2231;
+
+  /* Within bounds. Answered, resolved, settled. */
+  --settled: #57d9a3;
+  --settled-wash: #0a2a1f;
+
+  /*
+   * The page's only alarm register, spent on the escalation path and nowhere
+   * else. The moment a heading borrows it, a reader stops seeing it on the row
+   * where it means a person has to do something.
+   */
+  --handover: #ffa24c;
+  --handover-wash: #2e1c0d;
+
+  --refused: #ff6b6b;
+
+  --grid: color-mix(in oklab, var(--etch) 55%, transparent);
+
+  --radius: 0.75rem;
+  --seam: 0 1px 0 color-mix(in oklab, var(--lume) 6%, transparent);
+  --lift: 0 1px 2px rgb(0 0 0 / 0.5), 0 12px 40px rgb(0 0 0 / 0.45);
+}
+
+/*
+ * The light register. Not an inversion — the hues are re-chosen for paper,
+ * because the signal blue that glows on near-black goes flat and pale on white.
+ * A reader who has set light is telling you where they are.
+ */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --void: #f4f6f9;
+  --panel: #ffffff;
+  --panel-high: #ffffff;
+  --etch: #dde3ec;
+  --etch-strong: #b9c4d3;
+
+  --lume: #0b1017;
+  --lume-dim: #55637a;
+  --lume-faint: #6b7a8f;
+
+  --trace: #0b6ea8;
+  --trace-wash: #e4f2fb;
+
+  --settled: #0d7a54;
+  --settled-wash: #e2f5ed;
+
+  --handover: #a35104;
+  --handover-wash: #fdf0e4;
+
+  --refused: #b3261e;
+
+  --seam: 0 1px 0 color-mix(in oklab, var(--lume) 5%, transparent);
+  --lift: 0 1px 2px rgb(11 16 23 / 0.06), 0 12px 32px rgb(11 16 23 / 0.1);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+
+    --void: #f4f6f9;
+    --panel: #ffffff;
+    --panel-high: #ffffff;
+    --etch: #dde3ec;
+    --etch-strong: #b9c4d3;
+
+    --lume: #0b1017;
+    --lume-dim: #55637a;
+    --lume-faint: #6b7a8f;
+
+    --trace: #0b6ea8;
+    --trace-wash: #e4f2fb;
+
+    --settled: #0d7a54;
+    --settled-wash: #e2f5ed;
+
+    --handover: #a35104;
+    --handover-wash: #fdf0e4;
+
+    --refused: #b3261e;
+
+    --seam: 0 1px 0 color-mix(in oklab, var(--lume) 5%, transparent);
+    --lift: 0 1px 2px rgb(11 16 23 / 0.06), 0 12px 32px rgb(11 16 23 / 0.1);
+  }
+}
+
+@theme inline {
+  --color-void: var(--void);
+  --color-panel: var(--panel);
+  --color-panel-high: var(--panel-high);
+  --color-etch: var(--etch);
+  --color-etch-strong: var(--etch-strong);
+
+  --color-lume: var(--lume);
+  --color-lume-dim: var(--lume-dim);
+  --color-lume-faint: var(--lume-faint);
+
+  --color-trace: var(--trace);
+  --color-trace-wash: var(--trace-wash);
+  --color-settled: var(--settled);
+  --color-settled-wash: var(--settled-wash);
+  --color-handover: var(--handover);
+  --color-handover-wash: var(--handover-wash);
+  --color-refused: var(--refused);
+
+  --font-sans:
+    var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --shadow-lift: var(--lift);
+  --radius-panel: var(--radius);
+}
+
+/* --- browser surfaces ------------------------------------------------- */
+
+::selection {
+  background: var(--trace);
+  color: var(--void);
+}
+
+:root {
+  scrollbar-color: var(--etch-strong) transparent;
+  scrollbar-width: thin;
+  caret-color: var(--trace);
+  accent-color: var(--trace);
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--etch-strong);
+  border: 3.5px solid var(--void);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--lume-faint);
+}
+
+:focus-visible {
+  outline: 2px solid var(--trace);
+  outline-offset: 3px;
+  border-radius: 5px;
+}
+
+a {
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: from-font;
+}
+
+/*
+ * Every figure on this page is a measurement, so none of them may shift width
+ * between one value and the next.
+ */
+.tab {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* --- the panel grid ---------------------------------------------------- */
+
+/*
+ * The ruled ground the whole instrument sits on. Two hairline gradients rather
+ * than an image, so it costs nothing and stays crisp at any zoom, and it fades
+ * out toward the bottom of its container so it reads as a lit face rather than
+ * as graph paper.
+ *
+ * A grid background is otherwise a generated-page tell, and it is used here
+ * only because this page is literally a measurement surface — the exemption the
+ * rule itself names. It appears behind the instrument and nowhere else; no
+ * content section gets one.
+ */
+.grid-face {
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 35%, transparent 78%);
+  mask-image: radial-gradient(120% 90% at 50% 0%, #000 35%, transparent 78%);
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--etch);
+  border-radius: var(--radius);
+  box-shadow: var(--lift), inset var(--seam);
+}
+
+/* --- motion ------------------------------------------------------------ */
+
+/*
+ * Driven by an IntersectionObserver and one rAF-throttled scroll listener
+ * (`components/motion.tsx`), never by `animation-timeline: view()`. That
+ * property is Chromium-only, and an earlier build's `@supports` fallback
+ * turned every scroll effect *off* for Firefox and Safari rather than
+ * replacing it — a third of readers got a static page and no signal that
+ * anything was missing.
+ *
+ * The floor still holds, and is now structural. Every displaced state below is
+ * scoped to `[data-motion="on"]`, which only a successfully-wired observer
+ * sets, and everything is force-revealed after two seconds regardless. With no
+ * JavaScript, a failed observer, or reduced motion, the page is already at
+ * rest and fully legible.
+ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/*
+ * Reveal. The resting state is visible; the displaced state is opt-in.
+ *
+ * Every selector that can hide something keys on `[data-reveal]` — the exact
+ * attribute the observer watches and the failsafe iterates — and never on a
+ * class. That is not tidiness, it is the fix for a bug this page shipped: the
+ * hidden state keyed on `.reveal-pane` while the observer keyed on
+ * `[data-reveal]`, a component quietly dropped the attribute, and all four
+ * screenshots sat at `opacity: 0` permanently. The failsafe could not catch it
+ * because it never looked at those nodes.
+ *
+ * Keyed this way, an element can only be hidden if it is also being watched,
+ * so the two can no longer drift apart. A class on its own does nothing.
+ */
+[data-reveal] {
+  transition:
+    opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-motion="on"] [data-reveal]:not([data-seen]) {
+  opacity: 0;
+  transform: translateY(2rem);
+}
+
+/* A pane arrives with a little more weight than a paragraph does. */
+[data-motion="on"] [data-reveal].reveal-pane:not([data-seen]) {
+  transform: translateY(3rem) scale(0.985);
+  filter: blur(8px);
+}
+
+/* Staggered children, for a list that should land in sequence. */
+[data-motion="on"] [data-reveal][data-seen] > * {
+  animation: rise 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.9rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
+ * Parallax. `--shift` is written by the scroll listener; the element only ever
+ * translates, so nothing here can trigger layout. The variable defaults to 0,
+ * so an element whose listener never ran simply sits where it belongs.
+ */
+[data-parallax] {
+  transform: translate3d(0, var(--shift, 0px), 0);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-parallax] {
+    transform: none;
+  }
+}
+
+/*
+ * A pointer-reactive panel: a soft light follows the cursor across its face and
+ * the whole surface leans a degree or so toward it. `--tx`/`--ty` are written
+ * by `usePointer`, which does nothing at all on a coarse pointer.
+ */
+.reactive {
+  position: relative;
+  transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform: perspective(1400px) rotateX(calc(var(--ty, 0) * -2.4deg))
+    rotateY(calc(var(--tx, 0) * 2.4deg));
+}
+
+.reactive::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 400ms ease;
+  background: radial-gradient(
+    340px circle at var(--px, 50%) var(--py, 50%),
+    color-mix(in oklab, var(--trace) 13%, transparent),
+    transparent 65%
+  );
+}
+
+.reactive:hover::before {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reactive {
+    transform: none;
+  }
+}
+
+/* Arm: a control acknowledging the pointer. */
+.arm {
+  transition:
+    transform 260ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 260ms ease,
+    background-color 260ms ease,
+    color 260ms ease,
+    box-shadow 260ms ease;
+}
+.arm:hover {
+  transform: translateY(-2px);
+}
+
+/*
+ * The primary call, which should feel like it wants to be pressed. The sheen
+ * is a masked highlight that crosses the button on hover — one moment, not a
+ * loop, so it never nags from the corner of the eye.
+ */
+.call {
+  position: relative;
+  overflow: hidden;
+}
+
+.call::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-120%) skewX(-18deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, #fff 45%, transparent),
+    transparent
+  );
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .call:hover::after {
+    animation: sheen 720ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+@keyframes sheen {
+  to {
+    transform: translateX(120%) skewX(-18deg);
+  }
+}
+
+/* The live dot under the wordmark and on the stream header. */
+@keyframes pulse-ring {
+  0% {
+    opacity: 0.85;
+    transform: scale(0.6);
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(2.6);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pulse::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 99px;
+    background: currentColor;
+    animation: pulse-ring 2.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+}
+
+/*
+ * The reading rule: how far down the page the reader is. A scroll-linked
+ * progress bar is the one place `animation-timeline` is genuinely free —
+ * where it is unsupported the bar simply sits full-width and reads as a hairline
+ * rule, which is what it looks like anyway.
+ */
+.progress {
+  transform-origin: left;
+  /* Full width at rest, so an engine without scroll timelines shows a hairline
+     rule rather than nothing. The animation is what *removes* width, not what
+     grants it. */
+  transform: scaleX(1);
+  opacity: 0.5;
+}
+
+@supports (animation-timeline: scroll()) {
+  .progress {
+    opacity: 1;
+    animation: progress linear;
+    animation-timeline: scroll(root block);
+  }
+}
+
+@keyframes progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* --- panes ------------------------------------------------------------- */
+
+.pane {
+  border: 1px solid var(--etch);
+  border-radius: var(--radius);
+  background: var(--panel);
+  box-shadow: var(--lift);
+  overflow: hidden;
+}
+
+.pane img {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+}
+
+/* Only one theme's copy of a capture is ever in the flow. */
+:root:not([data-theme="light"]) .shot-light {
+  display: none;
+}
+:root[data-theme="light"] .shot-dark {
+  display: none;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .shot-dark {
+    display: none;
+  }
+  :root:not([data-theme="dark"]) .shot-light {
+    display: block;
+  }
+}
