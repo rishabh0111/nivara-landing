@@ -6,7 +6,7 @@
 ![Tailwind%20CSS](https://img.shields.io/badge/Tailwind%20CSS-06B6D4?style=flat&logo=tailwindcss&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat&logo=vercel&logoColor=white)
 
-[Live](https://nivara-landing-iota.vercel.app)
+[Live](https://nivara-desk.vercel.app)
 
 The landing page for [Nivara Desk](https://nivara-web-nextjs.vercel.app) — a multitenant
 support desk whose AI layer answers what it can, asks when a request is ambiguous, and
