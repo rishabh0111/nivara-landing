@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { Wake } from "@/components/wake";
 import "./globals.css";
 
 /**
@@ -50,7 +51,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${sans.variable} ${mono.variable}`}>
-      <body className="bg-void font-sans text-lume antialiased">{children}</body>
+      <body className="bg-void font-sans text-lume antialiased">
+        <Wake />
+        {children}
+      </body>
     </html>
   );
 }

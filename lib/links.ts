@@ -13,10 +13,12 @@
  */
 export const LINKS = {
   web: "https://nivara-web-nextjs.vercel.app",
-  dashboard: "https://nivara-web-nextjs.vercel.app/dashboard",
+  // `?demo` signs the reader straight in as the seeded account for that
+  // Surface, so "Open the live demo" opens the demo rather than a sign-in form.
+  dashboard: "https://nivara-web-nextjs.vercel.app/dashboard?demo",
   widget: "https://nivara-web-nextjs.vercel.app/widget",
-  portal: "https://nivara-web-nextjs.vercel.app/portal",
-  analytics: "https://nivara-web-nextjs.vercel.app/dashboard/analytics",
+  portal: "https://nivara-web-nextjs.vercel.app/portal?demo",
+  analytics: "https://nivara-web-nextjs.vercel.app/dashboard/analytics?demo",
   docs: "https://nivara-api-nestjs.onrender.com/docs",
   repoApi: "https://github.com/rishabh0111/nivara-api-nestjs",
   repoWeb: "https://github.com/rishabh0111/nivara-web-nextjs",
